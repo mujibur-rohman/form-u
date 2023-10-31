@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Form {
+  id          Int      @id @default(autoincrement())
+  userId      String
+  name        String
+  published   Boolean  @default(false)
+  description String   @default("")
+  content     String   @default("[]")
+  visits      Int @default(0)
+  submissions Int @default(0)
+  shareURL        String            @unique @default(uuid())
+  FormSubmissions FormSubmissions[]
+  createdAt   DateTime @default(now())
+
+  @@unique([name, userId])
+}
+
+model FormSubmissions {
+  id        Int      @id @default(autoincrement())
+  formId    Int
+  form      Form     @relation(fields: [formId], references: [id])
+  content   String
+  createdAt DateTime @default(now())
+}

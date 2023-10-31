@@ -2,6 +2,7 @@
 import { useTheme } from "next-themes";
 import React, { useEffect, useState } from "react";
 import { Tabs, TabsList, TabsTrigger } from "./ui/tabs";
+import { MoonIcon, SunIcon } from "lucide-react";
 
 function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
@@ -22,7 +23,7 @@ function ThemeSwitcher() {
             setTheme("light");
           }}
         >
-          Light
+          <SunIcon />
         </TabsTrigger>
         <TabsTrigger
           value="dark"
@@ -30,7 +31,7 @@ function ThemeSwitcher() {
             setTheme("dark");
           }}
         >
-          Dark
+          <MoonIcon />
         </TabsTrigger>
       </TabsList>
     </Tabs>
