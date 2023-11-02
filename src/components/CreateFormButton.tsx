@@ -24,8 +24,9 @@ import {
 } from "./ui/form";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { Loader2 } from "lucide-react";
+import { Loader2, PlusIcon } from "lucide-react";
 import { CreateForm } from "@/actions/form";
+import { useRouter } from "next/navigation";
 
 export const formSchema = z.object({
   name: z.string().min(3),
@@ -38,11 +39,13 @@ function CreateFormButton() {
   const form = useForm<FormSchemaType>({
     resolver: zodResolver(formSchema),
   });
+  const router = useRouter();
 
   async function onSubmit(values: FormSchemaType) {
     try {
-      await CreateForm(values);
+      const formId = await CreateForm(values);
       toast.success("Success Added Form");
+      router.replace(`/builder/${formId}`);
     } catch (error: any) {
       toast.error("Something Error");
     }
@@ -50,7 +53,15 @@ function CreateFormButton() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Create Form</Button>
+        <Button
+          variant="outline"
+          className="group border border-primary/20 h-[190px] items-center justify-center flex flex-col hover:border-primary hover:cursor-pointer border-dashed gap-4"
+        >
+          <PlusIcon className="h-8 w-8 text-muted-foreground group-hover:text-primary" />
+          <p className="font-bold text-xl text-muted-foreground group-hover:text-primary">
+            Create form
+          </p>
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
